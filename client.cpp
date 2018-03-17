@@ -1,6 +1,8 @@
 /*
-** client.c -- a stream socket client demo
+** client.cpp
 */
+
+#include <thread>
 
 #include <string>
 #include <memory>
@@ -18,12 +20,15 @@ int main(int argc, char *argv[])
 
     std::string hostname(argv[1]);
 
-    auto chatbox = std::make_shared<std::vector<std::string>>();;
+    auto chatbox = std::make_shared<std::vector<std::string>>();
 
     Connection conn(chatbox);
     conn.connect_to_server(hostname);
 
-    conn.receive();
+    std::thread t1(&Connection::receive, std::ref(conn));
+
+    t1.join();
+    //while(chatbox->size() == 0);
 
     printf("client: received '%s'\n", chatbox->front().c_str());
 

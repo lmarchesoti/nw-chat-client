@@ -14,7 +14,7 @@ public:
   void receive();
 
 private:
-  int sockfd;
+  std::shared_ptr<int> sockfd;
   std::shared_ptr<std::vector<std::string>> msg_queue;
 };
 

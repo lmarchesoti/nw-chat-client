@@ -30,7 +30,7 @@ void *get_in_addr(struct sockaddr *sa)
     return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
 
-Connection::~Connection() { close(sockfd); }
+Connection::~Connection() { close(*sockfd); }
 
 void Connection::connect_to_server(std::string hostname) { 
 
@@ -50,14 +50,14 @@ void Connection::connect_to_server(std::string hostname) {
 
     // loop through all the results and connect to the first we can
     for(p = servinfo; p != NULL; p = p->ai_next) {
-        if ((sockfd = socket(p->ai_family, p->ai_socktype,
-                p->ai_protocol)) == -1) {
+        if (*(sockfd = std::make_shared<int>(socket(p->ai_family, p->ai_socktype,
+                p->ai_protocol))) == -1) {
             perror("client: socket");
             continue;
         }
 
-        if (connect(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
-            close(sockfd);
+        if (connect(*sockfd, p->ai_addr, p->ai_addrlen) == -1) {
+            close(*sockfd);
             perror("client: connect");
             continue;
         }
@@ -83,7 +83,7 @@ void Connection::receive() {
     char buf[MAXDATASIZE];
     int numbytes;  
 
-    if ((numbytes = recv(sockfd, buf, MAXDATASIZE-1, 0)) == -1) {
+    if ((numbytes = recv(*sockfd, buf, MAXDATASIZE-1, 0)) == -1) {
         perror("recv");
         exit(1);
     }
@@ -91,5 +91,4 @@ void Connection::receive() {
     buf[numbytes] = '\0';
 
     msg_queue->push_back(std::string(buf));
-
 }
