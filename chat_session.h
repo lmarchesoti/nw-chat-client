@@ -6,7 +6,6 @@
 #include <string>
 #include <thread>
 
-#include "chatbox.h"
 #include "connection.h"
 
 class ChatSession {

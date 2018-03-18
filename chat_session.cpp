@@ -29,7 +29,7 @@ bool ChatSession::start() {
 std::vector<std::string> ChatSession::get_messages() {
 
   std::lock_guard<std::mutex> lock(this->global_lock);
-  return this->chatbox;//.all();
+  return this->chatbox;
 }
 
 void ChatSession::end() {
