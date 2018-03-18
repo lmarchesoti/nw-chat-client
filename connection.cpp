@@ -1,5 +1,8 @@
 #include "connection.h"
 
+#include <iostream>
+#include <exception>
+
 #include <string>
 #include <memory>
 #include <vector>
@@ -84,29 +87,33 @@ std::string Connection::receive() {
   int numbytes;  
 
   if ((numbytes = recv(*sockfd, buf, MAXDATASIZE-1, 0)) == -1) {
-      perror("recv");
-      exit(1);
+    std::cerr << "Disconnected from server" << std::endl;
+      //perror("recv");
+      //exit(1);
   }
 
   buf[numbytes] = '\0';
 
   return std::string(buf);
+
 }
 
 void Connection::listen_to_server() {
 
   while (true)
     this->receive_msg();
+    //usleep(1000);
 }
 
 void Connection::receive_msg() {
-    msg_queue->push_back(receive());
+  msg_queue->add_msg(receive());
 }
 
 void Connection::send_msg(std::string msg){
 
   if (send(*sockfd, msg.c_str(), msg.length(), 0) == -1)
-      perror("send");
+      //perror("send");
+    throw false;
 
 }
 
@@ -122,3 +129,19 @@ bool Connection::validate_username(std::string username) {
 
   return false;
 }
+
+bool Connection::is_alive() {
+
+  try {
+
+    this->send_msg("ping");
+
+  } catch (bool e) {
+
+    return false;
+  }
+
+  return true;
+}
+
+void Connection::disconnect() { close(*sockfd); }
