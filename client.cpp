@@ -25,7 +25,13 @@ int main(int argc, char *argv[])
     Connection conn(chatbox);
     conn.connect_to_server(hostname);
 
-    std::thread t1(&Connection::receive, std::ref(conn));
+    if(!conn.validate_username("john")) {
+
+      printf("Username already exists\n");
+      return 1;
+    }
+
+    std::thread t1(&Connection::receive_msg, std::ref(conn));
 
     t1.join();
     //while(chatbox->size() == 0);

@@ -11,7 +11,11 @@ public:
   Connection(std::shared_ptr<std::vector<std::string>> q) : msg_queue(q) { };
   ~Connection();
   void connect_to_server(std::string);
-  void receive();
+  std::string receive();
+  void send_msg(std::string);
+  bool validate_username(std::string);
+
+  void receive_msg();
 
 private:
   std::shared_ptr<int> sockfd;

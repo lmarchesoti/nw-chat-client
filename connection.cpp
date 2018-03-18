@@ -78,17 +78,41 @@ void Connection::connect_to_server(std::string hostname) {
     freeaddrinfo(servinfo); // all done with this structure
 }
 
-void Connection::receive() {
+std::string Connection::receive() {
 
-    char buf[MAXDATASIZE];
-    int numbytes;  
+  char buf[MAXDATASIZE];
+  int numbytes;  
 
-    if ((numbytes = recv(*sockfd, buf, MAXDATASIZE-1, 0)) == -1) {
-        perror("recv");
-        exit(1);
-    }
+  if ((numbytes = recv(*sockfd, buf, MAXDATASIZE-1, 0)) == -1) {
+      perror("recv");
+      exit(1);
+  }
 
-    buf[numbytes] = '\0';
+  buf[numbytes] = '\0';
 
-    msg_queue->push_back(std::string(buf));
+  return std::string(buf);
+}
+
+void Connection::receive_msg() {
+    msg_queue->push_back(receive());
+}
+
+void Connection::send_msg(std::string msg){
+
+  if (send(*sockfd, msg.c_str(), msg.length(), 0) == -1)
+      perror("send");
+
+}
+
+bool Connection::validate_username(std::string username) {
+
+  send_msg(username);
+
+  if (receive() == "OK") {
+
+    send_msg("OK");
+    return true;
+  }
+
+  return false;
 }
