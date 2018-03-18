@@ -93,6 +93,12 @@ std::string Connection::receive() {
   return std::string(buf);
 }
 
+void Connection::listen_to_server() {
+
+  while (true)
+    this->receive_msg();
+}
+
 void Connection::receive_msg() {
     msg_queue->push_back(receive());
 }

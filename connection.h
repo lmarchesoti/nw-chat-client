@@ -15,6 +15,7 @@ public:
   void send_msg(std::string);
   bool validate_username(std::string);
 
+  void listen_to_server();
   void receive_msg();
 
 private:
