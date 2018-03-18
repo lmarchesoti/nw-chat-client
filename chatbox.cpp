@@ -6,13 +6,13 @@
 
 void Chatbox::add_msg(std::string msg){
 
-  std::lock_guard<std::mutex> lock(this->data_mutex);
+  //std::lock_guard<std::mutex> lock(this->data_mutex);
   this->data.push_back(msg);
 }
 
 std::vector<std::string> Chatbox::all(){
 
-  std::lock_guard<std::mutex> lock(this->data_mutex);
+  //std::lock_guard<std::mutex> lock(this->data_mutex);
   /*
   std::vector<std::string> msgs;
 

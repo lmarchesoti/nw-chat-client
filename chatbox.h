@@ -14,7 +14,7 @@ public:
 
 private:
   
-  std::mutex data_mutex;
+  //std::mutex data_mutex;
   std::vector<std::string> data;
 };
 
