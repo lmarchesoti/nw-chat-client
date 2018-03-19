@@ -67,3 +67,8 @@ bool ChatSession::is_alive() {
 
   return this->conn.is_alive();
 }
+
+void ChatSession::send_msg(std::string msg) {
+
+  this->conn.send_msg(msg);
+}

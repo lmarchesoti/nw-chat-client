@@ -16,6 +16,7 @@ public:
   bool start();
   std::vector<std::string> get_messages();
   void end();
+  void send_msg(std::string);
   void listen_to_server();
   bool is_alive();
 

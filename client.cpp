@@ -42,10 +42,12 @@ int main(int argc, char *argv[])
       std::cout << "------------" << std::endl;
 
       sleep(3);
-      std::cout << "disconnecting" << std::endl;
-      chat.end();
-      std::cout << "disconnected" << std::endl;
+      chat.send_msg("ola, server!");
     }
+
+    std::cout << "disconnecting" << std::endl;
+    chat.end();
+    std::cout << "disconnected" << std::endl;
 
     return 0;
 }
