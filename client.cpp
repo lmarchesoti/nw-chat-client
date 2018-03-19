@@ -48,7 +48,8 @@ int main(int argc, char *argv[])
       std::cout << "------------" << std::endl;
 
       //sleep(3);
-      chat.send_msg(data);
+			chat.send_msg("message\n");
+      chat.send_msg(data+"\n");
     }
 
     std::cout << "disconnecting" << std::endl;

@@ -131,7 +131,7 @@ bool Connection::is_alive() {
 
   try {
 
-    this->send_msg("ping");
+    this->send_msg("\n");
 
   } catch (bool e) {
 
@@ -143,6 +143,7 @@ bool Connection::is_alive() {
 
 void Connection::disconnect() {
 
+	this->send_msg("disconnect\n");
   shutdown(*sockfd, SHUT_RDWR);
 	//close(*sockfd);
 }
