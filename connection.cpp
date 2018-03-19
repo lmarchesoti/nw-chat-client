@@ -144,6 +144,7 @@ bool Connection::is_alive() {
 void Connection::disconnect() {
 
   shutdown(*sockfd, SHUT_RDWR);
+	//close(*sockfd);
 }
 
 bool Connection::socket_ok() {

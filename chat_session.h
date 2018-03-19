@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <thread>
+#include <atomic>
 
 #include "connection.h"
 
@@ -30,6 +31,7 @@ private:
   std::vector<std::string> chatbox;
   Connection conn;
   std::thread listener;
+	std::atomic<bool> listen;
 };
 
 #endif

@@ -31,8 +31,14 @@ int main(int argc, char *argv[])
     if(chat.start() == true)
       return 1;
 
+		std::string data;
     int num_msgs = 0;
-    while(chat.is_alive()) {
+		auto msgs = chat.get_messages();
+		for(auto it=msgs.begin(); it!=msgs.end(); ++it)
+			std::cout << "client: received " << *it << std::endl;
+		std::cout << "------------" << std::endl;
+
+    while(chat.is_alive() && (std::getline(std::cin, data))) {
 
       system("clear");
       auto msgs = chat.get_messages();
@@ -41,8 +47,8 @@ int main(int argc, char *argv[])
 	std::cout << "client: received " << *it << std::endl;
       std::cout << "------------" << std::endl;
 
-      sleep(3);
-      chat.send_msg("ola, server!");
+      //sleep(3);
+      chat.send_msg(data);
     }
 
     std::cout << "disconnecting" << std::endl;

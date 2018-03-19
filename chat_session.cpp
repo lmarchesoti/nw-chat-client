@@ -21,6 +21,7 @@ bool ChatSession::start() {
     return true;
   }
 
+	this->listen = true;
   this->listener = std::thread(&ChatSession::listen_to_server, std::ref(*this));
 
   return false;
@@ -34,21 +35,24 @@ std::vector<std::string> ChatSession::get_messages() {
 
 void ChatSession::end() {
 
+	this->listen = false;
+
   std::lock_guard<std::mutex> lock(this->global_lock);
   this->conn.disconnect();
-  // TODO: signal completion to listener thread
-  //this->listener.join();
+
+	this->listener.join();
 }
 
 void ChatSession::listen_to_server() {
 
   std::string msg;
 
-  while (true) {
+  while (this->listen) {
 
     msg = this->conn.receive();
     
-    this->include_msg(msg);
+		if (this->listen)
+			this->include_msg(msg);
 
     usleep(1000);
   }
