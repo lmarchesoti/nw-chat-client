@@ -94,7 +94,7 @@ void ChatSession::update_display() {
 		auto msgs = this->get_messages();
 		if (msgs.size() > num_msgs) {
 
-			std::cout << "client: received " << msgs.at(num_msgs) << std::endl;
+			std::cout << msgs.at(num_msgs) << std::endl;
 			++num_msgs;
 		}
 
@@ -104,13 +104,13 @@ void ChatSession::update_display() {
 
 void ChatSession::process_input() {
 
-	std::string data;
+	std::string to, message;
 
 	this->disconnect_command = false;
 
-	while(this->is_alive() && (std::getline(std::cin, data))) {
-		this->send_msg("message\n");
-		this->send_msg(data+"\n");
+	while(this->is_alive() && (std::getline(std::cin, to)) && std::getline(std::cin, message)) {
+		std::string comm = "message\n" + to + "\n" + message + "\n";
+		this->send_msg(comm);
 	}
 
 	this->disconnect_command = true;
